@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 public class MyCanvas extends View {
 
@@ -19,6 +22,8 @@ public class MyCanvas extends View {
     private Paint mPaint = new Paint();
 
     int mSelectedColor = Color.BLACK;
+
+    private ArrayList<Rect> squares = new ArrayList<Rect>();
 
     public MyCanvas(Context context) {
         this(context,null);
@@ -36,7 +41,9 @@ public class MyCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(mStartX,mStartY,mEndX,mEndY,mPaint);
+        for (Rect sqr:squares ){
+            canvas.drawRect(sqr, mPaint);
+        }
     }
 
     @Override
@@ -73,6 +80,7 @@ public class MyCanvas extends View {
                     mEndX=mStartX+l;
                     mEndY=mStartY+l;
                 }
+                squares.add(new Rect(mStartX,mStartY,mEndX,mEndY));
                 invalidate();
 
                 break;
